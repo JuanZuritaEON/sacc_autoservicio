@@ -1,0 +1,182 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "poppins-bold";
+  src: url("Poppins-Bold.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "poppins-italic";
+  src: url("Poppins-Italic.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "poppins-light";
+  src: url("Poppins-Light.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "poppins-light_italic";
+  src: url("Poppins-LightItalic.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "poppins-regular";
+  src: url("Poppins-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --white-color: #FFF;
+  --black-color: #000;
+  --bg-hover: #F4F7FF;
+  --bg-light: #D1ECF1;
+  --font-blue-light: #9FB9D5;
+  --font-yellow-light: #FFC400;
+  --font-blue-normal: #0007CC;
+  --font-green-light: #00B207;
+  --font-red-normal: #BF0000;
+  --baseColor: #4463B3;
+  --font-blue: #0C5460;
+  --font-warning: #856404;
+  --font-danger: #721C24;
+  --font-success: #155724;
+  --icon-warning: #FFC200;
+  --gray-font: #AFAFAF;
+  --bg-standard: #F4F4F4;
+  --bg-alert-warning: #FFF3CD;
+  --bg-alert-danger: #F8D7DA;
+  --bg-alert-success: #D4EDDA;
+  --bg-hover-button: #E3E9F7;
+  --bg-special-light: #F8F9FA;
+  --bg-shadow-box: #EFEFEF;
+  --border-light: #BEE5EB;
+  --border-special-light: #DEE2E6;
+  --border-warning: #FFEEBA;
+  --border-danger: #F5C6CB;
+  --border-success: #C3E6CB;
+  --border-hp: #E9ECEF;
+  --darker-font: #495057;
+  --light-dark-font: #4a4a4a;
+  --darker-base: #0B0B51;
+  --border-info: #17A2B8;
+  --border-normal: #CED4DA;
+  --darker-gray-font: #575756;
+  --graph_color_1: #FF3333;
+  --graph_color_2: #407FC1;
+  --graph_color_3: #EE9E69;
+  --graph_color_4: #A0CA72;
+  --poppins-bold: 'poppins-bold';
+  --poppins-light: 'poppins-light';
+  --poppins-italic: 'poppins-italic';
+  --poppins-regular: 'poppins-regular';
+  --poppins-light-italic: 'popping-light-italic';
+}
+
+* {
+  -webkit-padding: 0;
+  -moz-padding: 0;
+  -webkit-margin: 0;
+  -moz-margin: 0;
+  -webkit-appearance: unset;
+  -moz-appearance: unset;
+  -webkit-font-family: var(--poppins-regular);
+  -moz-font-family: var(--poppins-regular);
+  padding: 0;
+  margin: 0;
+  appearance: unset;
+  box-sizing: border-box;
+  font-family: var(--poppins-regular);
+}
+
+body {
+  -webkit-font-size: 1rem;
+  -moz-font-size: 1rem;
+  font-size: 1rem;
+  background-color: var(--bg-standard);
+}
+
+/* Header Nav Steps Styles */
+.custom-selectors-steps.ant-steps-navigation .ant-steps-item-finish::after {
+  border-top-color: var(--baseColor);
+  border-right-color: var(--baseColor);
+}
+.custom-selectors-steps.ant-steps-navigation .ant-steps-item::before,
+.custom-selectors-steps.ant-steps-navigation .ant-steps-item-active::before,
+.custom-selectors-steps.ant-steps-navigation .ant-steps-item-process::before {
+  display: none !important;
+  background: transparent;
+}
+.custom-navigation-steps.ant-steps-navigation .ant-steps-item-process::after {
+  border-top-color: var(--baseColor);
+  border-right-color: var(--baseColor);
+}
+
+/* Label Field Title Styles */
+.label-title{
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.label-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  height: 0.15rem;
+  background-color: var(--graph_color_2);
+  border-radius: 0.25rem;
+}
+
+/* Custom Button Selector Styles */
+.custom-radio-button {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+.custom-radio-button .ant-radio-button-wrapper {
+  flex: 1;
+  text-align: center;
+  background-color: var(--white-color);
+  border-color: var(--border-normal);
+  color: var(--darker-font);
+  border-radius: 0.5rem;
+  height: 4.25rem;
+  line-height: 4.25rem;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+.custom-radio-button .ant-radio-button-wrapper-checked {
+  background-color: var(--bg-hover-button);
+  border-color: var(--baseColor);
+  color: var(--font-blue-normal);
+  box-shadow: -1px 0 0 0 var(--bg-hover-button);
+}
+.custom-radio-button .ant-radio-button-wrapper-checked:hover {
+  color: var(--font-blue-normal);
+}
+.custom-radio-button .ant-radio-button-wrapper:not(.ant-radio-button-wrapper-checked):hover {
+  opacity: 0.6;
+  border-color: var(--baseColor);
+  color: var(--font-blue-normal);
+}
+.custom-radio-button .ant-radio-button-wrapper-disabled:not(.ant-radio-button-wrapper-checked):hover {
+  opacity: 1;
+  background-color: var(--white-color);
+  border-color: var(--border-normal);
+  color: var(--darker-font);
+}
+.custom-radio-button .ant-radio-button-wrapper::before {
+  display: none;
+}
+
+/* Custom Select Comp Styles */
+.custom-select-comp {
+  height: 3rem;
+  border-radius: 0.5rem;
+  border-color: var(--border-normal);
+}
