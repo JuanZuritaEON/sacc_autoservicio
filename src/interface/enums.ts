@@ -12,6 +12,7 @@ export enum FormType {
   TEXT = 'text',
   NUMBER = 'number',
   INPUT_BTN = 'input-btn',
+  SELECT_BTN = 'select-btn',
   DISPLAY = 'display',
 }
 
@@ -42,6 +43,7 @@ export enum FirstStepLabels {
   NO = 'No',
 }
 export enum FirstFieldNames {
+  CONSULTANT = 'consultant',
   REPORT_TYPE = 'reportType',
   PERSON_TYPE = 'personType',
   RECEPTION_CHANNEL = 'receptionChannel',
@@ -50,6 +52,7 @@ export enum FirstFieldNames {
   FACULTATED_USER = 'facultatedUser',
 }
 export enum FirstFieldValues {
+  CONSULTANT = 'Consultant',
   CONSUMER = 'Consumidor',
   BUSINESS = 'Otorgante',
   FISICA = 'Persona Fisica',

@@ -3,15 +3,25 @@ import {
   FirstFieldValues,
   SecondFieldValues,
   ThirdFieldValues,
-  FourthFieldValues
+  FourthFieldValues,
+  FormType
 } from "./enums";
 import { Rule } from "antd/es/form";
 
-export type FormOptions = FirstFieldValues | SecondFieldValues | ThirdFieldValues | FourthFieldValues
+export type FormOptions = FirstFieldValues | SecondFieldValues | ThirdFieldValues | FourthFieldValues | string
+export type DependencyCondition = {
+  field: string,
+  value?: FormOptions,
+  values?: any[],
+  hasValue?: boolean,
+  condition?: (selectedValue: any, parentValue?: Record<string, any>) => boolean
+}
 interface OptionItem<T = FormOptions> {
   label: string;
   value: T;
   icon?: ComponentType<any>;
+  isComplex?: boolean;
+  onClick?: (setterField: (field: string, value: any) => void) => void;
 }
 export type FormValues = {
   id: number,
@@ -19,32 +29,57 @@ export type FormValues = {
   name: string,
   placeholder?: string,
   className?: string,
+  buttonClassName?: string,
   span?: number,
   icon: ComponentType<any>,
   options?: OptionItem[],
   style?: React.CSSProperties,
   isDisabled?: boolean,
   valueText?: string,
-  buttonText?: string;
-  onButtonClick?: (value: any) => void;
+  buttonText?: string,
+  onButtonClick?: (value: any, setterField?: (field: string, newVal: any) => void) => void,
   displayIcon?: ComponentType<any>,
-  type: 'button' | 'select' | 'text' | 'number' | 'input-btn' | 'display',
+  type: FormType,
   maxLength?: number,
   onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void,
   rules?: Rule[],
-  dependsOn?: {
-    field: string;
-    value: FormOptions;
-  }
+  dependsOn?: DependencyCondition
 }
 export type FormState = FormOptions | undefined
 export type FormSetter = Dispatch<SetStateAction<any>> | undefined
+export interface ModalData {
+  title?: string;
+  children: React.ReactNode;
+  activeModal?: {
+    active: boolean;
+    setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  };
+  headerComponent?: JSX.Element;
+  footerComponent?: JSX.Element;
+  noHeader?: boolean;
+  noFooter?: boolean;
+  onAccept?: () => void;
+}
+export type SubTabsInfo<T> = {
+  id: T;
+  name: string;
+  icon?: ComponentType<any>;
+}[]
+export interface SubTabsProps<T>{
+  subTabActual: T
+  classNames?: string
+  tabs: SubTabsInfo<T>
+  setTab: React.Dispatch<React.SetStateAction<T>>
+}
 
 export type FirstFormValues = {
   reportType: string,
   personType: string,
   receptionChannel: string,
   officeClassification: string,
+}
+export type StepOneComplements = {
+  consultant: string,
   userKey: string,
   facultatedUser: string,
 }
@@ -87,9 +122,7 @@ export interface FirstStepPayload {
   tipoReporteEspecial: string,
   tipoPersona: string,
   medioRecepcion: string,
-  clasificacionOficina: string,
-  usuarioFacultado: string,
-  claveUsuario: string,
+  clasificacionOficina: string
 }
 export interface SecondStepPayload {
   cveReporte: string,

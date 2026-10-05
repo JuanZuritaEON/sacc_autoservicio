@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Space, Typography } from 'antd';
+import { FormInstance, Space, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
 import { StepForm } from '..';
 import { secondForm } from '../../utils';
@@ -8,7 +8,7 @@ import { apiSlice, SAVE_APP_FLUX, useAppDispatch, UPDATE_STEP_VALUES, useAppSele
 
 const { Title } = Typography
 
-const SecondStep = ({ initialValues, isReadOnly }: { initialValues: SecondFormValues, isReadOnly: boolean }) => {
+const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: SecondFormValues, isReadOnly: boolean, form: FormInstance }) => {
   const dispatch = useAppDispatch()
   const { steps } = useAppSelector((state: RootState) => state.app.appFluxContext)
 
@@ -150,7 +150,7 @@ const SecondStep = ({ initialValues, isReadOnly }: { initialValues: SecondFormVa
           {SecondStepLabels.DESCRIPTION}
         </Title>
       </Space>
-      <StepForm values={formattedValues} initialValues={formValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      <StepForm mainForm={form} values={formattedValues} initialValues={formValues} handleValues={handleValues} isReadOnly={isReadOnly} />
     </Space>
   )
 }

@@ -176,7 +176,10 @@ body {
 
 /* Custom Select Comp Styles */
 .custom-select-comp {
-  height: 3rem;
+  height: 2.5rem;
   border-radius: 0.5rem;
   border-color: var(--border-normal);
+}
+.custom-button-comp {
+  height: 2.25rem;
 }

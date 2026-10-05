@@ -1,45 +1,38 @@
 import { FC, useEffect } from 'react';
-import { Col, Form, Row, Typography } from 'antd';
+import { Col, Form, FormInstance, Row, Typography } from 'antd';
 import { FormType, FormValues } from '../../interface';
 import renderFields from './Fields';
 import { RenderIcon } from '..';
+import { isDependencyMet } from '../../utils';
 
 const { Title } = Typography;
 
 const StepForm: FC<{
+  mainForm: FormInstance,
   values: FormValues[],
   initialValues: Record<string, any>,
-  handleValues: (values: any) => void,
+  handleValues: (values: any, setterField?: (field: string, value: any) => void) => void,
   isReadOnly: boolean
-}> = ({ values, initialValues, handleValues, isReadOnly }) =>{
+}> = ({ mainForm,values, initialValues, handleValues, isReadOnly }) =>{
   const stepValues = values
-  const [form] = Form.useForm()
-  const formValues = Form.useWatch([], form)
-
+  const formValues = Form.useWatch([], mainForm)
+  
   const isVisible = (field: FormValues) => {
     if (!field.dependsOn) return true;
-
-    const { field: fieldValue, value } = field.dependsOn;
-    const valorActual = formValues?.[fieldValue];
-
-    if (Array.isArray(value)) {
-      return value.includes(valorActual);
-    }
-
-    return valorActual === value;
+    
+    return isDependencyMet(field.dependsOn, formValues ?? {})
   }
-
+  
   useEffect(() => {
     if (formValues) handleValues(formValues)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues,])
+  }, [formValues])
   
   return (
     <Form
       disabled={isReadOnly}
-      form={form}
+      form={mainForm}
       layout="vertical"
-      preserve={false}
       initialValues={initialValues}
     >
       <Row gutter={[32, 0]}>
@@ -65,9 +58,9 @@ const StepForm: FC<{
                 )}
                 rules={values.rules}
                 getValueProps={(value) => ({
-                  value: (values.type === FormType.SELECT && value === '') ? undefined : value,
+                  value: ((values.type === FormType.SELECT || values.type === FormType.SELECT_BTN) && value === '') ? undefined : value,
                 })}
-                normalize={(value) => ((values.type === FormType.SELECT && value === undefined) ? '' : value)}
+                normalize={(value) => (((values.type === FormType.SELECT || values.type === FormType.SELECT_BTN) && value === undefined) ? '' : value)}
               >
                 {renderFields(values)}
               </Form.Item>

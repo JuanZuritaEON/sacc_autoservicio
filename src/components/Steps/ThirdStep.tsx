@@ -1,4 +1,4 @@
-import { Space, Typography } from 'antd';
+import { FormInstance, Space, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
 import { StepForm } from '..';
 import { thirdForm } from '../../utils';
@@ -7,7 +7,7 @@ import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch } from '../../state';
 
 const { Title } = Typography
 
-const ThirdStep = ({ initialValues, isReadOnly }: { initialValues: ThirdFormValues, isReadOnly: boolean }) => {
+const ThirdStep = ({ initialValues, isReadOnly, form }: { initialValues: ThirdFormValues, isReadOnly: boolean, form: FormInstance }) => {
   const dispatch = useAppDispatch()
   const handleValues = (values: ThirdFormValues) => {
     dispatch(SAVE_APP_FLUX({ totalValues: Object.values(values).filter((valor) => valor !== undefined && valor !== null).length}))
@@ -27,7 +27,7 @@ const ThirdStep = ({ initialValues, isReadOnly }: { initialValues: ThirdFormValu
           {ThirdStepLabels.DESCRIPTION}
         </Title>
       </Space>
-      <StepForm values={thirdForm} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      <StepForm mainForm={form} values={thirdForm} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
     </Space>
   )
 }

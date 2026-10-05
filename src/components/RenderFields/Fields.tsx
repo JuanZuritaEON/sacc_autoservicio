@@ -1,9 +1,11 @@
-import { Radio, Input, Select, InputNumber, Space, Button, Typography, Flex } from 'antd';
+import { useState } from 'react';
+import { Radio, Input, Select, InputNumber, Space, Button, Typography, Flex, Form } from 'antd';
 import Icon from '@ant-design/icons';
 import { FormValues } from '../../interface';
 import RenderIcon from '../RenderIcon';
 
 const { Text } = Typography;
+
 interface InputWithButtonProps {
   values: FormValues;
   value?: any;
@@ -31,27 +33,75 @@ const InputWithButtonControl = ({ values, value, onChange }: Readonly<InputWithB
     </Space.Compact>
   )
 }
+const SelectWithButtonControl = ({ values }: Readonly<{ values: FormValues}>) => {
+  const form = Form.useFormInstance()
+  const [selectValue, setSelectValue] = useState(undefined)
+
+  return (
+    <Flex gap={8} align='center' style={{ width: '100%' }}>
+      <Select
+        value={selectValue ?? undefined}
+        showSearch={{ optionFilterProp: 'label' }}
+        className={values.className}
+        placeholder={values.placeholder || 'Selecciona una opción'}
+        size="large"
+        options={values.options || []}
+        onChange={(val) => setSelectValue(val)}
+      />
+      <Button
+        type="primary"
+        className={values.buttonClassName}
+        onClick={() => values.onButtonClick?.(selectValue, form.setFieldValue)}
+        disabled={!selectValue}
+      >
+        {values.buttonText}
+      </Button>
+    </Flex>
+  )
+}
+const CustomRadioGroup = ({ values }: Readonly<{ values: FormValues }>) => {
+  const form = Form.useFormInstance();
+  return (
+    <Radio.Group
+      className={values.className}
+      optionType="button"
+      buttonStyle="outline"
+      size="large"
+      value={form.getFieldValue(values.name)}
+      disabled={values.isDisabled}
+      onChange={e => {
+        const option = values.options?.find(option => option.value === e.target.value);
+        if (option?.onClick && option.isComplex) {
+          option.onClick(form.setFieldValue)
+        } else form.setFieldValue(values.name, e.target.value);
+      }}
+    >
+      {values.options?.map((option) => {
+        const OptionIcon = option.icon;
+        return (
+          <Radio.Button
+            key={String(option.value)}
+            name={values.name}
+            value={option.value}
+          >
+            {OptionIcon ? <RenderIcon icon={OptionIcon} /> : null}
+            {option.label}
+          </Radio.Button>
+        );
+      })}
+    </Radio.Group>
+  )
+}
 
 const renderFields = (values: FormValues) => {
   switch (values.type) {
     case 'button':
-      return (
-        <Radio.Group className={values.className} optionType="button" buttonStyle="outline" size="large">
-          {values.options?.map((option) => {
-            const OptionIcon = option.icon;
-            return (
-              <Radio.Button key={String(option.value)} name={values.name} value={option.value}>
-                {OptionIcon ? <RenderIcon icon={OptionIcon} /> : null}
-                {option.label}
-              </Radio.Button>
-            );
-          })}
-        </Radio.Group>
-      )
+      return <CustomRadioGroup values={values} />
 
     case 'select':
       return (
         <Select
+          showSearch={{ optionFilterProp: 'label' }}
           className={values.className}
           placeholder={values.placeholder || 'Selecciona una opción'}
           size="large"
@@ -68,21 +118,24 @@ const renderFields = (values: FormValues) => {
 
     case 'input-btn':
       return <InputWithButtonControl values={values} />
+
+    case 'select-btn':
+      return <SelectWithButtonControl values={values} />
     
-      case 'display':
-        return (
-          <Flex vertical gap="small">
-            <Space align="center">
-              {values.displayIcon ? <span className='anticon'>
-                <Icon component={values.displayIcon} style={{ fontSize: '1rem' }} />
-                </span> : null}
-                
-              <Text style={{ fontSize: '1rem' }}>
-                {`$${values.valueText} MXN`}
-              </Text>
-            </Space>
-          </Flex>
-        );
+    case 'display':
+      return (
+        <Flex vertical gap="small">
+          <Space align="center">
+            {values.displayIcon ? <span className='anticon'>
+              <Icon component={values.displayIcon} style={{ fontSize: '1rem' }} />
+              </span> : null}
+              
+            <Text style={{ fontSize: '1rem' }}>
+              {`$${values.valueText} MXN`}
+            </Text>
+          </Space>
+        </Flex>
+      );
 
     default:
       return null;

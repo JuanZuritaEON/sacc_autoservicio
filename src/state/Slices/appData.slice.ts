@@ -6,7 +6,7 @@ import type {
 } from '@reduxjs/toolkit/query/react'
 import { formatStepPayload, sendToastMessage } from '../../utils';
 
-const baseUrl = 'http://desarrollo:7003/SACC/'
+const baseUrl = globalThis.Liferay ? `${window.origin}/group/sacc/` : 'http://desarrollo:7003/SACC/'
 const rawBaseQuery = fetchBaseQuery({ baseUrl })
 
 const dynamicBaseQuery: BaseQueryFn<
@@ -15,7 +15,7 @@ const dynamicBaseQuery: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let resultBaseQuery
-/*   if (globalThis.Liferay) {
+  if (globalThis.Liferay) {
     if (globalThis.Liferay?.Session?.get('sessionState') === 'expired') {
       sendToastMessage({
         message: 'Su sesión ha expirado por favor vuelva a iniciar sesión.',
@@ -24,46 +24,22 @@ const dynamicBaseQuery: BaseQueryFn<
       setTimeout(() => {globalThis.location.reload()}, 5000)
       return { data: null }
     }
-    const {
-      app: {
-        appFluxContext: {
-          liferayUser: {
-            properties: { CDC_ID_AUD, CDC_SEC_AUD, CDC_URL_AUD },
-            data: { token }
-          }
-        }
-      }
-    } = api.getState() as any
-    const body = `grant_type=client_credentials&client_id=${CDC_ID_AUD}&client_secret=${CDC_SEC_AUD}`
-    const adjustedArgs = typeof args === 'string' ? args : {
-      ...args,
-      body,
-      url: CDC_URL_AUD + '/oauth2/token',
-      method: 'POST',
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    }
-    const { data }: any = await rawBaseQuery(
-      adjustedArgs,
-      api,
-      extraOptions)
-    const authTokenSerialized = data.token_type + " " + data.access_token
     const addedToken = typeof args === "string" ? args : {
       ...args,
       body: {...args.body},
-      url: CDC_URL_AUD + '' + args.url,
       headers: {
-        'Authorization': authTokenSerialized,
-        'token': token ?? '',
+        'Authorization': '',
+        'token': '',
       }
     }
     resultBaseQuery = rawBaseQuery(addedToken, api, extraOptions)
   } else {
-  } */
-  const addedToken = typeof args === "string" ? args : {
-    ...args,
-    body: {...args.body},
+    const addedToken = typeof args === "string" ? args : {
+      ...args,
+      body: {...args.body},
+    }
+    resultBaseQuery = rawBaseQuery(addedToken, api, extraOptions)
   }
-  resultBaseQuery = rawBaseQuery(addedToken, api, extraOptions)
   return resultBaseQuery
 }
 
@@ -71,6 +47,45 @@ export const apiSlice = createApi({
   reducerPath: 'apiRequest',
   baseQuery: dynamicBaseQuery,
   endpoints: builder => ({
+    getListConsultants: builder.query<any, any>({
+      query: initialLoad => ({
+        url: 'catalogos/otorgantes',
+        method: 'POST',
+        body: initialLoad
+      }),
+      transformErrorResponse: (error: any) => ({
+        url: 'catalogos/otorgantes',
+        code: error.status,
+        message: error?.error ?? error?.data?.error ?? error?.data?.mensaje ?? error?.data?.errores[0]?.mensaje ?? error?.data?.mensajes[0],
+        active: true,
+      })
+    }),
+    getListUserKeys: builder.query<any, any>({
+      query: initialLoad => ({
+        url: 'catalogos/usuarios-otorgante',
+        method: 'POST',
+        body: initialLoad
+      }),
+      transformErrorResponse: (error: any) => ({
+        url: 'catalogos/usuarios-otorgante',
+        code: error.status,
+        message: error?.error ?? error?.data?.error ?? error?.data?.mensaje ?? error?.data?.errores[0]?.mensaje ?? error?.data?.mensajes[0],
+        active: true,
+      })
+    }),
+    getListFacultatedUsers: builder.query<any, any>({
+      query: initialLoad => ({
+        url: 'catalogos/funcionarios-otorgante',
+        method: 'POST',
+        body: initialLoad
+      }),
+      transformErrorResponse: (error: any) => ({
+        url: 'catalogos/funcionarios-otorgante',
+        code: error.status,
+        message: error?.error ?? error?.data?.error ?? error?.data?.mensaje ?? error?.data?.errores[0]?.mensaje ?? error?.data?.mensajes[0],
+        active: true,
+      })
+    }),
     getStepInfo: builder.query<any, any>({
       query: initialLoad => ({
         url: 'reporte/consultarPantalla',
@@ -167,6 +182,9 @@ export const apiSlice = createApi({
 })
 
 export const {
+  useGetListConsultantsQuery,
+  useGetListUserKeysQuery,
+  useGetListFacultatedUsersQuery,
   useGetStepInfoQuery,
   useSaveStepQuery,
   useGetCURPInfoQuery,

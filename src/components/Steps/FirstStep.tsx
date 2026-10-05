@@ -1,18 +1,82 @@
-import { Space, Typography } from 'antd';
+import { FormInstance, Space, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
 import { StepForm } from '..';
 import { firstForm } from '../../utils';
-import { FirstStepLabels, FirstFormValues } from '../../interface';
-import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch } from '../../state';
+import { FirstStepLabels, FirstFormValues, FirstFieldValues } from '../../interface';
+import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch, useAppSelector, RootState } from '../../state';
 
 const { Title } = Typography
 
-const FirstStep = ({ initialValues, isReadOnly }: { initialValues: FirstFormValues, isReadOnly: boolean }) => {
+const FirstStep = ({ form, initialValues, isReadOnly }: { form: FormInstance, initialValues: FirstFormValues, isReadOnly: boolean }) => {
   const dispatch = useAppDispatch()
+  const { userKey } = useAppSelector((state: RootState) => state.app.appFluxContext)
   const handleValues = (values: FirstFormValues) => {
-    dispatch(SAVE_APP_FLUX({ totalValues: Object.values(values).filter((valor) => valor !== undefined && valor !== null).length}))
-    dispatch(UPDATE_STEP_VALUES({ stepId: 0, data: {id:0, ...values} }))
+    const fields = firstForm.map((field) => field.name)
+    const filteredObject = fields.reduce((acc, key) => {
+      if (key in values) {
+        acc[key] = values[key as keyof FirstFormValues];
+      }
+      return acc;
+    }, {} as Record<string, any>)
+
+    dispatch(SAVE_APP_FLUX({ totalValues: fields.length}))
+    dispatch(UPDATE_STEP_VALUES({ stepId: 0, data: {id:0, ...filteredObject} }))
   }
+
+  const formattedValues = firstForm.map(value => {
+    if (value.id === 1) {
+      return {
+        ...value,
+        options:  value.options.map(option => ({
+          ...option,
+          isComplex: option.value === FirstFieldValues.BUSINESS,
+          onClick: () => {
+            dispatch(SAVE_APP_FLUX({
+              individualConsultant: '',
+              userKey: '',
+              facultatedUser: {
+                id: '',
+                name: '',
+                email: '',
+                address: '',
+                phone: ''
+              },
+              modalData: {
+                active: true,
+                title: `Flujo Otorgante`,
+                idRender: option.label.toLowerCase(),
+            }}))
+          }
+        }))
+      }
+    }
+    if (value.id === 3) {
+      return {
+        ...value,
+        options: value.options.map(option => {
+          if (!userKey) return option
+          return {
+            ...option,
+            isComplex: option.value === FirstFieldValues.OFFICE || option.value === FirstFieldValues.MESSAGING || option.value === FirstFieldValues.EMAIL,
+            onClick: (setterField: (field: string, value: any) => void) => {
+              dispatch(SAVE_APP_FLUX({ modalData: {
+                active: true,
+                title: `Canal ${option.label}`,
+                idRender: option.label.toLowerCase(),
+                acceptButtonLabel: option.value === FirstFieldValues.OFFICE ? 'Aceptar' : 'Guardar',
+                backButtonLabel: 'Cancelar',
+                onAccept: () => {
+                  setterField(value.name, option.value)
+                  dispatch(SAVE_APP_FLUX({ modalData: { active: false } }))
+                }
+              }}))
+            }
+          }
+        })
+      }
+    }
+    return value
+  })
 
   return (
     <Space vertical size={24}>
@@ -27,7 +91,7 @@ const FirstStep = ({ initialValues, isReadOnly }: { initialValues: FirstFormValu
           {FirstStepLabels.DESCRIPTION}
         </Title>
       </Space>
-      <StepForm values={firstForm} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      <StepForm mainForm={form} values={formattedValues} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
     </Space>
   )
 }

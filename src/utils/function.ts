@@ -1,5 +1,5 @@
 import React from 'react';
-import { FirstFormValues, FirstStepPayload, FourthFormValues, FourthStepPayload, SecondFormValues, SecondStepPayload, ThirdFormValues, ThirdStepPayload } from "../interface";
+import { DependencyCondition, FirstFormValues, FirstStepPayload, FourthFormValues, FourthStepPayload, SecondFormValues, SecondStepPayload, ThirdFormValues, ThirdStepPayload } from "../interface";
 import { toast } from 'react-toastify';
 
 export const calcPercentage = (
@@ -18,17 +18,48 @@ export const calcPercentage = (
   return Math.min(percentage, 100)
 }
 
+export const isDependencyMet = (dependency: DependencyCondition | undefined, formValues: Record<string, any>): boolean => {
+  if (!dependency) return true;
+  const parentValue = formValues?.[dependency.field]
+
+  if (typeof dependency.condition === 'function') {
+    try {
+      return Boolean(dependency.condition(parentValue, formValues ?? {}))
+    } catch (error) {
+      return false
+    }
+  }
+
+  if (dependency.hasValue) {
+    if (parentValue === undefined || parentValue === null || parentValue === '') {
+      return false
+    }
+    if (Array.isArray(parentValue)) return parentValue.length > 0
+    if (typeof parentValue === 'string') return parentValue.trim().length > 0
+    return true
+  }
+
+  if (Array.isArray(dependency.values)) {
+    if (parentValue === undefined || parentValue === null) return false
+    return dependency.values.includes(parentValue)
+  }
+
+  if (dependency.value !== undefined) {
+    return parentValue === dependency.value
+  }
+
+  return parentValue !== undefined && parentValue !== null && parentValue !== ''
+}
+
 const stepMappers: Record<number, (data: unknown, reportId?: number) => unknown> = {
   0: (data) => {
-    const values = data as FirstFormValues;
+    const values = data as FirstFormValues
     return {
       cveUsuario: "test",
       tipoReporteEspecial: values.reportType,
       tipoPersona: values.personType,
       medioRecepcion: values.receptionChannel,
-      clasificacionOficina: values.officeClassification,
-      usuarioFacultado: values.facultatedUser,
-      claveUsuario: values.userKey,
+      clasificacionOficina: values.officeClassification
     } satisfies FirstStepPayload;
   },
   1: (data, reportId) => {

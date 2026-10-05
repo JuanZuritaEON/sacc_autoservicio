@@ -3,6 +3,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 const initialState = {
   appFluxContext: {
     currentStep: 0,
+    consultants: [{
+      id: '',
+      name: '',
+    }],
+    individualConsultant: '',
+    userKey: '',
+    facultatedUser: {
+      id: '',
+      name: '',
+      lastName: '',
+      secondLastName: '',
+      email: '',
+      address: '',
+      phone: ''
+    },
+    modalData: {
+      title: '',
+      active: false,
+      idRender: '',
+      backButtonLabel: '',
+      acceptButtonLabel: '',
+      onAccept: () => {},
+    },
     reportId: 0,
     totalValues: 0,
     percentage: 0,
@@ -12,8 +35,6 @@ const initialState = {
         id: 0,
         reportType: '',
         personType: '',
-        userKey: '',
-        facultatedUser: '',
         receptionChannel: '',
         officeClassification: '',
       },

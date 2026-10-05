@@ -2,7 +2,6 @@ import {
   CheckCircleOutlined,
   FileTextOutlined,
   InfoCircleOutlined,
-  LoadingOutlined,
   SendOutlined,
   SettingOutlined,
   UserAddOutlined,
@@ -23,7 +22,8 @@ import {
   PhoneIcon,
   EnvelopeIcon,
   TableCellsIcon,
-  ScaleIcon
+  ScaleIcon,
+  FingerPrintIcon
 } from '@heroicons/react/24/outline'
 import {
   Labels,
@@ -74,6 +74,31 @@ export const footerStyle = {
   height: '10dvh',
   backgroundColor: 'white',
 }
+export const modalComponentStyles = {
+  overlay: {
+    position: 'fixed',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: '99',
+    background: 'rgba(0, 0, 0, 0.5)'
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.1rem',
+    margin: '0',
+    padding: '0',
+    boxShadow: 'rgb(0 0 0 / 24%) 0 3px 8px',
+    borderRadius: '.5rem',
+    maxHeight: '100dvh',
+    maxWidth: '100dvw',
+    position: 'relative',
+    inset: '0',
+    border: 'none',
+    overflow: 'hidden',
+  },
+}
 
 export const headerSteps = [
   {
@@ -89,7 +114,7 @@ export const headerSteps = [
   {
     id: 3,
     label: Labels.STEP_3,
-    icon: LoadingOutlined
+    icon: FingerPrintIcon
   },
   {
     id: 4,
@@ -210,60 +235,48 @@ export const firstForm = [
         icon: ScaleIcon
       }
     ]
+  }
+]
+export const stepOneComplements = [
+  {
+    id: 1,
+    label: FirstStepLabels.BUSINESS,
+    placeholder: '-- Selecciona un otorgante --',
+    type: FormType.SELECT_BTN,
+    span: 24,
+    icon: UserAddOutlined,
+    className: 'custom-select-comp',
+    buttonClassName: 'custom-button-comp',
+    name: FirstFieldNames.CONSULTANT,
+    buttonText: 'Buscar',
   },
   {
-    id: 5,
+    id: 2,
     label: FirstStepLabels.USER_KEY,
-    placeholder: 'Selecciona una opción...',
+    placeholder: '-- Selecciona una clave de usuario --',
     type: FormType.SELECT,
-    span: 12,
+    span: 24,
     icon: KeyOutlined,
     className: 'custom-select-comp',
     name: FirstFieldNames.USER_KEY,
     dependsOn: {
-      field: FirstFieldNames.REPORT_TYPE,
-      value: FirstFieldValues.BUSINESS
-    },
-    rules: [
-      {
-        required: true,
-        message: 'Por favor selecciona una opción'
-      }
-    ],
-    options: [
-      {
-        label: FirstStepLabels.YES,
-        value: FirstFieldValues.YES
-      },
-      {
-        label: FirstStepLabels.NO,
-        value: FirstFieldValues.NO
-      }
-    ]
+      field: FirstFieldNames.CONSULTANT,
+      hasValue: true
+    }
   },
   {
-    id: 6,
+    id: 3,
     label: FirstStepLabels.FACULTATED_USER,
-    placeholder: 'Selecciona una opción...',
+    placeholder: '-- Selecciona un funcionario facultado --',
     type: FormType.SELECT,
-    span: 12,
+    span: 24,
     icon: UserAddOutlined,
     className: 'custom-select-comp',
     name: FirstFieldNames.FACULTATED_USER,
     dependsOn: {
-      field: FirstFieldNames.REPORT_TYPE,
-      value: FirstFieldValues.BUSINESS
-    },
-    options: [
-      {
-        label: FirstStepLabels.YES,
-        value: FirstFieldValues.YES
-      },
-      {
-        label: FirstStepLabels.NO,
-        value: FirstFieldValues.NO
-      }
-    ]
+      field: FirstFieldNames.CONSULTANT,
+      hasValue: true
+    }
   }
 ]
 export const secondForm = [

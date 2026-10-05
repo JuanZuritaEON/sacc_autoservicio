@@ -1,4 +1,4 @@
-import { Space, Typography } from 'antd';
+import { FormInstance, Space, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
 import { StepForm } from '..';
 import { fourthForm } from '../../utils';
@@ -7,7 +7,7 @@ import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch } from '../../state';
 
 const { Title } = Typography
 
-const FourthStep = ({ initialValues, isReadOnly }: { initialValues: FourthFormValues, isReadOnly: boolean }) => {
+const FourthStep = ({ initialValues, isReadOnly, form }: { initialValues: FourthFormValues, isReadOnly: boolean, form: FormInstance }) => {
   const dispatch = useAppDispatch()
   const handleValues = (values: FourthFormValues) => {
     dispatch(SAVE_APP_FLUX({ totalValues: Object.values(values).filter((valor) => valor !== undefined && valor !== null).length}))
@@ -27,7 +27,7 @@ const FourthStep = ({ initialValues, isReadOnly }: { initialValues: FourthFormVa
           {FourthStepLabels.DESCRIPTION}
         </Title>
       </Space>
-      <StepForm values={fourthForm} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      <StepForm mainForm={form} values={fourthForm} initialValues={initialValues} handleValues={handleValues} isReadOnly={isReadOnly} />
     </Space>
   )
 }
