@@ -24,7 +24,7 @@ const ConsultantFlux = ({ form }: { form: FormInstance }) => {
           ...modalData,
           onAccept: () => {
             form.setFieldValue('reportType', 'Otorgante')
-            form.resetFields(['receptionChannel'])
+            form.setFieldValue('receptionChannel', '')
             dispatch(SAVE_APP_FLUX({ 
               modalData: { active: false },
               userKey: userKey,
@@ -34,7 +34,6 @@ const ConsultantFlux = ({ form }: { form: FormInstance }) => {
         },
         individualConsultant: values.consultant,
       }))
-
     }
   }
 

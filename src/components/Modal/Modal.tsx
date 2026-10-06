@@ -50,6 +50,7 @@ const Modal = (props: ModalData) => {
           >{modalData.backButtonLabel ?? 'Cancelar'}</Button>
           <Button
             type='primary'
+            htmlType='button'
             onClick={onAccept}
             disabled={isUndefined(onAccept)}
           >{modalData.acceptButtonLabel ?? 'Aceptar'}</Button>

@@ -1,16 +1,30 @@
+import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch, useAppSelector, RootState } from '../../state';
+import { FirstStepLabels, FirstFormValues, FirstFieldValues } from '../../interface';
+import { BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import { FormInstance, Space, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
-import { StepForm } from '..';
 import { firstForm } from '../../utils';
-import { FirstStepLabels, FirstFormValues, FirstFieldValues } from '../../interface';
-import { SAVE_APP_FLUX, UPDATE_STEP_VALUES, useAppDispatch, useAppSelector, RootState } from '../../state';
+import { StepForm } from '..';
 
 const { Title } = Typography
 
 const FirstStep = ({ form, initialValues, isReadOnly }: { form: FormInstance, initialValues: FirstFormValues, isReadOnly: boolean }) => {
   const dispatch = useAppDispatch()
-  const { userKey } = useAppSelector((state: RootState) => state.app.appFluxContext)
+  const { userKey, individualConsultant,  } = useAppSelector((state: RootState) => state.app.appFluxContext)
+
   const handleValues = (values: FirstFormValues) => {
+    if (values.reportType === FirstFieldValues.CONSUMER) {
+      dispatch(SAVE_APP_FLUX({
+        individualConsultant: '',
+        userKey: '',
+        facultatedUser: {
+          id: '',
+          name: '',
+          email: '',
+          address: '',
+          phone: ''
+        }}))
+    } else if (values.reportType === FirstFieldValues.BUSINESS && values.receptionChannel === '') form.setFieldValue('receptionChannel', 'Otorgante')
     const fields = firstForm.map((field) => field.name)
     const filteredObject = fields.reduce((acc, key) => {
       if (key in values) {
@@ -53,9 +67,9 @@ const FirstStep = ({ form, initialValues, isReadOnly }: { form: FormInstance, in
     if (value.id === 3) {
       return {
         ...value,
-        options: value.options.map(option => {
+        options: value.options.flatMap((option, index) => {
           if (!userKey) return option
-          return {
+          const newOption = {
             ...option,
             isComplex: option.value === FirstFieldValues.OFFICE || option.value === FirstFieldValues.MESSAGING || option.value === FirstFieldValues.EMAIL,
             onClick: (setterField: (field: string, value: any) => void) => {
@@ -72,6 +86,17 @@ const FirstStep = ({ form, initialValues, isReadOnly }: { form: FormInstance, in
               }}))
             }
           }
+          if (index === 0 && individualConsultant) {
+            return [
+              {
+                label: FirstStepLabels.BUSINESS,
+                value: FirstFieldValues.BUSINESS,
+                icon: BuildingOfficeIcon
+              },
+              newOption
+            ]
+          }
+          return newOption
         })
       }
     }

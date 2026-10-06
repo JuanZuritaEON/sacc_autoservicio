@@ -4,6 +4,7 @@ import { FormType, FormValues } from '../../interface';
 import renderFields from './Fields';
 import { RenderIcon } from '..';
 import { isDependencyMet } from '../../utils';
+import { RootState, useAppSelector } from '../../state';
 
 const { Title } = Typography;
 
@@ -13,7 +14,8 @@ const StepForm: FC<{
   initialValues: Record<string, any>,
   handleValues: (values: any, setterField?: (field: string, value: any) => void) => void,
   isReadOnly: boolean
-}> = ({ mainForm,values, initialValues, handleValues, isReadOnly }) =>{
+}> = ({ mainForm,values, initialValues, handleValues, isReadOnly }) => {
+  const { currentStep } = useAppSelector((state: RootState) => state.app.appFluxContext)
   const stepValues = values
   const formValues = Form.useWatch([], mainForm)
   
@@ -28,9 +30,16 @@ const StepForm: FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues])
   
+  useEffect(() => {
+    if (initialValues && Object.keys(initialValues).length > 0 && currentStep === 1) {
+      mainForm.setFieldsValue(initialValues);
+    }
+  }, [initialValues, mainForm, currentStep]);
+  
   return (
     <Form
       disabled={isReadOnly}
+      component={false}
       form={mainForm}
       layout="vertical"
       initialValues={initialValues}

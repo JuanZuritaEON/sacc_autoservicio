@@ -39,7 +39,8 @@ import {
   ThirdStepLabels,
   FourthStepLabels,
   FourthFieldNames,
-  FourthFieldValues
+  FourthFieldValues,
+  FirstStepAddeds
 } from "../interface/enums";
 
 export const layoutStyle = {
@@ -51,7 +52,7 @@ export const contentStyle = {
   width: '100%',
   display: 'flex',
   flexDirection: 'column' as const,
-  padding: '2rem 1rem',
+  padding: '2rem 2.5rem',
   backgroundColor: 'var(--white-color)',
   height: '100%',
   overflow: 'auto',
@@ -277,6 +278,62 @@ export const stepOneComplements = [
       field: FirstFieldNames.CONSULTANT,
       hasValue: true
     }
+  }
+]
+export const messagingComplement = [
+  {
+    id: 1,
+    label: FirstStepAddeds.STREET_NUMBER,
+    placeholder: FirstStepAddeds.STREET_NUMBER,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.STREET_VALUE,
+  },
+  {
+    id: 2,
+    label: FirstStepAddeds.PROVINCE,
+    placeholder: FirstStepAddeds.PROVINCE,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.PROVINCE_VALUE,
+  },
+  {
+    id: 3,
+    label: FirstStepAddeds.ADDRESS,
+    placeholder: FirstStepAddeds.ADDRESS,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.ADDRESS_VALUE,
+  },
+  {
+    id: 4,
+    label: FirstStepAddeds.CITY,
+    placeholder: FirstStepAddeds.CITY,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.CITY_VALUE,
+  },
+  {
+    id: 5,
+    label: FirstStepAddeds.STATE,
+    placeholder: FirstStepAddeds.STATE,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.STATE_VALUE,
+  },
+  {
+    id: 6,
+    label: FirstStepAddeds.ZIP_CODE,
+    placeholder: FirstStepAddeds.ZIP_CODE,
+    type: FormType.TEXT,
+    span: 12,
+    icon: UserAddOutlined,
+    name: FirstStepAddeds.ZIP_CODE_VALUE,
   }
 ]
 export const secondForm = [

@@ -1,10 +1,10 @@
 export enum Labels {
-  STEP_1 = 'Parametros',
+  STEP_1 = 'Parámetros',
   STEP_2 = 'Cliente',
-  STEP_3 = 'Validacion',
+  STEP_3 = 'Validación',
   STEP_4 = 'Despacho',
   STEP_5 = 'Estatus',
-  ERROR_CODE = 'Codigo de error',
+  ERROR_CODE = 'Código de error',
 }
 export enum FormType {
   BUTTON = 'button',
@@ -19,28 +19,42 @@ export enum FormType {
 //// Steps Labels
 export enum FirstStepLabels {
   TITLE = 'Solicitud de reporte',
-  DESCRIPTION = 'Defina el tipo de reporte solicitado y la via de recepcion correspondiente.',
+  DESCRIPTION = 'Defina el tipo de reporte solicitado y la vía de recepción correspondiente.',
   //// Fields
   REPORT_TYPE = 'Tipo de Reporte Especial',
   PERSON_TYPE = 'Tipo de Persona',
-  RECEPTION_CHANNEL = 'Canal / Medio de Recepcion',
-  OFFICE_CLASSIFICATION = 'Clasificacion de oficina',
+  RECEPTION_CHANNEL = 'Canal / Medio de Recepción',
+  OFFICE_CLASSIFICATION = 'Clasificación de oficina',
   USER_KEY = 'Clave de Usuario',
   FACULTATED_USER = 'Funcionario Facultado',
   CONSUMER = 'Consumidor',
   BUSINESS = 'Otorgante',
-  FISICA = 'Persona Fisica',
+  FISICA = 'Persona Física',
   MORAL = 'Persona Moral',
   OFFICE = 'Oficina',
-  MESSAGING = 'Mensajeria',
+  MESSAGING = 'Mensajería',
   EMAIL = 'Email',
-  PHONE = 'Telefono',
+  PHONE = 'Teléfono',
   WHATSAPP = 'Whatsapp',
   WINDOW = 'Ventanilla',
   CC = 'CC / TU',
   CONDUSEF = 'Condusef',
   YES = 'Si',
   NO = 'No',
+}
+export enum FirstStepAddeds {
+  STREET_NUMBER = 'Calle y Número',
+  STREET_VALUE = 'streetNumber',
+  PROVINCE = 'Colonia o Población',
+  PROVINCE_VALUE = 'province',
+  ADDRESS = 'Delegación / Municipio',
+  ADDRESS_VALUE = 'address',
+  CITY = 'Ciudad',
+  CITY_VALUE = 'city',
+  STATE = 'Estado',
+  STATE_VALUE = 'state',
+  ZIP_CODE = 'Código Postal',
+  ZIP_CODE_VALUE = 'zipCode',
 }
 export enum FirstFieldNames {
   CONSULTANT = 'consultant',
@@ -55,12 +69,12 @@ export enum FirstFieldValues {
   CONSULTANT = 'Consultant',
   CONSUMER = 'Consumidor',
   BUSINESS = 'Otorgante',
-  FISICA = 'Persona Fisica',
+  FISICA = 'Persona Física',
   MORAL = 'Persona Moral',
   OFFICE = 'Oficina',
-  MESSAGING = 'Mensajeria',
+  MESSAGING = 'Mensajería',
   EMAIL = 'Email',
-  PHONE = 'Telefono',
+  PHONE = 'Teléfono',
   WHATSAPP = 'Whatsapp',
   WINDOW = 'Ventanilla',
   CC = 'CC / TU',
@@ -70,20 +84,20 @@ export enum FirstFieldValues {
 }
 
 export enum SecondStepLabels {
-  TITLE = 'Informacion General del Solicitante',
-  DESCRIPTION = 'Sincronizacion automatizada con RENAPO y SEPOMEX.',
+  TITLE = 'Información General del Solicitante',
+  DESCRIPTION = 'Sincronización automatizada con RENAPO y SEPOMEX.',
   //// Fields
-  CURP = 'Clave Unica de Registro de Poblacion',
+  CURP = 'Clave Única de Registro de Población',
   FIRST_NAME = 'Primer Nombre',
   SECOND_NAME = 'Segundo Nombre',
   LAST_NAME = 'Apellido Paterno',
   SECOND_LAST_NAME = 'Apellido Materno',
   BIRTH_DATE = 'Fecha de Nacimiento',
   RFC = 'RFC Calculado',
-  CP = 'Codigo Postal',
+  CP = 'Código Postal',
   PROVINCE = 'Colonia',
-  ADDRESS = 'Direccion Completa (Calle y Numeros)',
-  CITY = 'Municipio o Alcaldia',
+  ADDRESS = 'Dirección Completa (Calle y Números)',
+  CITY = 'Municipio o Alcaldía',
   STATE = 'Estado / Entidad Federativa',
   SERVICE_CAL = '¿Desea anexar el servicio de Mi Calificate?'
 }
@@ -110,11 +124,11 @@ export enum SecondFieldValues {
 }
 
 export enum ThirdStepLabels {
-  TITLE = 'Mesa de Validacion y Controles Antifraude',
+  TITLE = 'Mesa de Validación y Controles Antifraude',
   DESCRIPTION = 'Contejo normativo obligatorio para autorizar la apertura de datos crediticios.',
   //// Fields
-  ID_VALID = '¿Se identifico correctamente con ID Oficial vigente?',
-  SIGNATURE = '¿La solicitud cuenta con Firma Autografa Identica?',
+  ID_VALID = '¿Se identificó correctamente con ID Oficial vigente?',
+  SIGNATURE = '¿La solicitud cuenta con Firma Autógrafa Identica?',
   AUTH_REQUIRED = 'Autenticacion obligatoria: Al no contar con confirmacion total de expediente (ID o Firma faltante), es obligatorio aplicar el cuestionario del historial crediticio del Buro.',
   AUTH_QUESTIONNAIRE = 'Preguntas de Autenticacion Obligatorias: Responda el cuestionario normativo para validar el historial en el Buro del cliente.',
   CREDIT_CARD = '¿Posee alguna Tarjeta de Credito Activa / Credito Comercial Activo?',

@@ -11,7 +11,7 @@ const stepComponent = [FirstStep, SecondStep, ThirdStep, FourthStep]
 const complementsComponent = {
   otorgante: ConsultantFlux,
   oficina: OfficeChanel,
-  mensajeria: MessagingChanel,
+  mensajería: MessagingChanel,
   email: EmailChanel,
 }
 

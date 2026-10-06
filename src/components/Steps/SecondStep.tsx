@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FormInstance, Space, Typography } from 'antd';
+import { FormInstance, Space, Spin, Typography } from 'antd';
 import { SlidersOutlined } from '@ant-design/icons';
 import { StepForm } from '..';
-import { secondForm } from '../../utils';
+import { secondForm, sendAppError } from '../../utils';
 import { SecondStepLabels, SecondFormValues } from '../../interface';
 import { apiSlice, SAVE_APP_FLUX, useAppDispatch, UPDATE_STEP_VALUES, useAppSelector, RootState } from '../../state';
 
@@ -11,9 +11,9 @@ const { Title } = Typography
 const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: SecondFormValues, isReadOnly: boolean, form: FormInstance }) => {
   const dispatch = useAppDispatch()
   const { steps } = useAppSelector((state: RootState) => state.app.appFluxContext)
-
   const { getCURPInfo, getCPInfo } = apiSlice.endpoints
   const [formValues, setFormValues] = useState(initialValues)
+  const [loading, setLoading] = useState(false)
   
   const handleValues = (values: SecondFormValues) => {
     dispatch(SAVE_APP_FLUX({ totalValues: Object.keys(values).length}))
@@ -22,7 +22,7 @@ const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: Second
 
   const handleValidateCurp = async (value: string) => {
     try {
-      dispatch(SAVE_APP_FLUX({ generalLoader: true }))
+      setLoading(true)
       const promise = dispatch(getCURPInfo.initiate({ curp: value }, { forceRefetch: true }))
       const { data, isSuccess, isError, error } = await promise
       if (isSuccess) {
@@ -35,7 +35,7 @@ const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: Second
           secondLastName: data.secondLastName,
           birthDate: data.birthDate,
           rfc: data.rfc,
-        } }))
+        }}))
         setFormValues({
           ...formValues,
           curp: data.curp,
@@ -71,14 +71,14 @@ const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: Second
         throw error
       }
     } catch (error) {
-      console.log(error)
+      sendAppError(error)
     } finally {
-      dispatch(SAVE_APP_FLUX({ generalLoader: false }))
+      setLoading(false)
     }
   }
   const handleSearchCp = async (value: string) => {
     try {
-      dispatch(SAVE_APP_FLUX({ generalLoader: true }))
+      setLoading(true)
       const promise = dispatch(getCPInfo.initiate({ codigoPostal: value }, { forceRefetch: true }))
       const {...rest} = steps[1] as SecondFormValues
       const { data, isSuccess, isError, error } = await promise
@@ -116,9 +116,9 @@ const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: Second
         throw error
       }
     } catch (error) {
-      console.log(error)
+      sendAppError(error)
     } finally {
-      dispatch(SAVE_APP_FLUX({ generalLoader: false }))
+      setLoading(false)
     }
   }
   const formattedValues = secondForm.map(value => {
@@ -150,7 +150,9 @@ const SecondStep = ({ initialValues, isReadOnly, form }: { initialValues: Second
           {SecondStepLabels.DESCRIPTION}
         </Title>
       </Space>
-      <StepForm mainForm={form} values={formattedValues} initialValues={formValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      <Spin spinning={loading}>
+        <StepForm mainForm={form} values={formattedValues} initialValues={formValues} handleValues={handleValues} isReadOnly={isReadOnly} />
+      </Spin>
     </Space>
   )
 }

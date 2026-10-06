@@ -111,7 +111,9 @@ const renderFields = (values: FormValues) => {
       )
 
     case 'text':
-      return <Input placeholder={values.placeholder || 'Ingresa un valor'} size="large" disabled={values.isDisabled} />;
+      return <Input readOnly
+      onFocus={(e) => e.target.removeAttribute('readonly')}
+      autoComplete="one-time-code" placeholder={values.placeholder || 'Ingresa un valor'} size="large" disabled={values.isDisabled} />;
 
     case 'number':
       return <InputNumber controls={false} placeholder={values.placeholder} style={{ width: '100%' }} size="large" disabled={values.isDisabled} />;

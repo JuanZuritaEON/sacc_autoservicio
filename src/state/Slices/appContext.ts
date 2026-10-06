@@ -1,5 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+type facultatedUser = {
+  id: string,
+  name: string,
+  lastName: string,
+  secondLastName: string,
+  email: string,
+  address: string,
+  phone: string
+}
+
 const initialState = {
   appFluxContext: {
     currentStep: 0,
@@ -124,6 +134,12 @@ export const appContextSlice = createSlice({
         Object.assign(step, data);
       }
     },
+    UPDATE_FACULTATED_DATA: (state, action: PayloadAction<{ field: keyof facultatedUser; data: any}>) => {
+      const { field, data } = action.payload;
+      if (state.appFluxContext.facultatedUser) {
+        state.appFluxContext.facultatedUser[field] = data
+      }
+    },
     SAVE_ERRORS: (state, action) => {
       return {
         ...state,
@@ -136,6 +152,7 @@ export const appContextSlice = createSlice({
 export const { 
   SAVE_APP_FLUX,
   UPDATE_STEP_VALUES,
+  UPDATE_FACULTATED_DATA,
   SAVE_ERRORS
 } = appContextSlice.actions;
 export default appContextSlice.reducer;
